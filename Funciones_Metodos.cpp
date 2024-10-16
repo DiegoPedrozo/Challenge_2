@@ -6,8 +6,7 @@
 
 using namespace std;
 
-EstacionServicio::EstacionServicio(){  // Constructor de un objeto de la clase EstacionServicio
-    nombre = "";
+EstacionServicio::EstacionServicio() : nombre(""), cantidadSurtidores(0){  // Constructor de un objeto de la clase EstacionServicio
     for (int i = 0; i < 4; i++){ tanqueCentral[i] = 0; }
 
     for (int i = 0; i < 2; i++){  // Asigna por defecto un valor de ubicación geográfica a una E/S
@@ -16,16 +15,22 @@ EstacionServicio::EstacionServicio(){  // Constructor de un objeto de la clase E
 }
 
 EstacionServicio::~EstacionServicio(){  // Destructor de un objeto de la clase EstacionServicio
-    cout << "Estacion de servicio eliminada" << endl;
+    //delete[] surtidores;  // Libera del heap el espacio ocupado por el arreglo de surtidores
 }
 
-Surtidor::Surtidor(){}  // Constructor de un objeto de la clase Surtidor
+Surtidor::Surtidor(){}  // Constructor por defecto de una instancia de la clase Surtidor
+
+Surtidor::Surtidor(int _codigo) : codigoIdentificador(_codigo), estado(true){}  // Constructor de un surtidor, donde por defecto está habilitado para dispensar combustible
 
 Surtidor::~Surtidor(){}  // Destructor de un objeto de la clase Surtidor
 
 RedNacional::RedNacional(){}  // Constructor de un objeto de la clase RedNacional
 
 RedNacional::~RedNacional(){}  // Destructor de un objeto de la clase RedNacional
+
+int Surtidor::getCodigoIdentificador(){  // Consulta / obtiene el código identificador de un surtidor
+    return codigoIdentificador;
+}
 
 void Surtidor::setEstado(){  // Permite activar o desactivar el estado de un surtidor
     char _estado;
@@ -34,6 +39,10 @@ void Surtidor::setEstado(){  // Permite activar o desactivar el estado de un sur
         cout << "Error: no ingreso una opcion de estado valido para el surtidor. Ingrese uno (1) para activar el surtidor o cero (0) para desactivarlo: "; cin >> _estado;
     }
     estado = _estado;
+}
+
+bool Surtidor::getEstado(){
+    return estado;
 }
 
 void EstacionServicio::setNombre(){  // Permite asignarle un nombre a una E/S
@@ -102,6 +111,35 @@ void EstacionServicio::setTanqueCentral(){  // Genera de forma aleatoria la cant
 
 int* EstacionServicio::getTanqueCentral(){  // Devuelve un puntero al arreglo que almacena la cantidad de combustible del tanque central
     return tanqueCentral;
+}
+
+int EstacionServicio::getCantidadSurtidores(){  // Consulta / obtiene la cantidad de surtidores de una estación de servicio
+    return cantidadSurtidores;
+}
+
+void EstacionServicio::crearSurtidor(){  // Permite crear un surtidor para una estación de servicio determinada
+    Surtidor surtidor;
+    int codigo = asignarCodigoSurtidor(surtidor);
+    surtidores[cantidadSurtidores] = surtidor;
+    cantidadSurtidores++;
+}
+
+int RedNacional::asignarCodigoSurtidor(){  // Al momento de crear un surtidor, le asigna un código único y le suma uno al código identificador
+    codigoSurtidor += 1;
+    return codigoSurtidor;
+}
+
+// ---------------------------------------------------------------------- FUNCIONES -------------------------------------------------------------------------------------
+
+bool verificarCantidadSurtidores(const EstacionServicio &estacion){  // Función amiga que verifica que la cantidad de surtidores que contiene una E/S sea válida
+    if (estacion.cantidadSurtidores > 11){
+        return false;
+    } else { return true; }
+    // Retorna true si se pueden agregar más surtidores o false en caso contrario
+}
+
+int asignarCodigoSurtidor(const RedNacional& estacion, const Surtidor& estacion){  // Al momento de crear un surtidor, la función amiga le asigna un código único al mismo
+    surtidor.codigoIdentificador
 }
 
 

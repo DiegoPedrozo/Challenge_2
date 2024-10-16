@@ -12,23 +12,30 @@ class Surtidor{
 
 public:
 
+    int getCodigoIdentificador();  // Consulta / obtiene el código identificador de un surtidor
+
     void setEstado();  // Modifica el estado de un surtidor de una E/S
     bool getEstado();  // Consulta / obtiene el estado de un surtidor
 
-    Surtidor();
+    Surtidor();  // Constructor por defecto de una instancia de la clase Surtidor
+    Surtidor(int _codigo);  // Constructor con código como parámetro, cuando se crea un nuevo surtidor
     ~Surtidor();
+
+    friend int asignarCodigoSurtidor(const Surtidor& surtidor);  // Al momento de crear un surtidor, la función amiga le asigna un código único al mismo
 
 };
 
 class EstacionServicio{
 
-    Surtidor surtidor;
     //string gerente;  // ¿Servirá de algo usarlo?
     string nombre;
     string ubicacionGeografica[2];  // Almacena en la primer entrada la latitud y en la segunda la longitud de una E/S
     string region;  // Se usa para determinar el precio del combustible según la ubicacion geográfica de la E/S
     int codigoIdentificador;  // En serie, en un rango [100, 999], único para cada E/S
     int tanqueCentral[3];  // [0] = cantidad de regular, [1] = cantidad de premium, [2] = cantidad de EcoExtra
+
+    Surtidor surtidores[12];  // Arreglo de surtidores, máximo 12 por E/S
+    int cantidadSurtidores;  // Lleva la cuenta de la cantidad de surtidores que tiene una E/S
 
 public:
 
@@ -48,11 +55,21 @@ public:
 
     void setTanqueCentral();  // Para asignarle una cantidad de combustible al tanque central
     int* getTanqueCentral();  // Devuelve un puntero al arreglo que almacena la cantidad de combustible del tanque central
+
+    int getCantidadSurtidores();  // Consulta / obtiene la cantidad de surtidores que posee una E/S
+
+    void crearSurtidor();  // Permite crear un surtidor para una estación de servicio determinada
+
+    friend bool verificarCantidadSurtidores(const EstacionServicio &estacion);  // Función amiga que verifica que la cantidad de surtidores que contiene una E/S sea válida
+
 };
 
 class RedNacional{
 
     EstacionServicio estacionServicio;
+    int cantidadEstaciones = 0;
+    int codigoEstacion = 99;  // Se asigna en serie a una E/S al momento de ser creada
+    int codigoSurtidor = 999;  // Se asigna en serie a un surtidor al momento de ser creado
     int precios[9];  // Contiene los precios del combustible de las estaciones de servicio de la red nacional
 
 public:
@@ -60,6 +77,14 @@ public:
     RedNacional();
     ~RedNacional();
 
+    friend int asignarCodigoSurtidor(const Surtidor& surtidor);  // Al momento de crear un surtidor, la función amiga le asigna un código único al mismo
+
 };
+
+// ---------------------------------------------------------------------- FUNCIONES -------------------------------------------------------------------------------------
+
+bool verificarCantidadSurtidores(EstacionServicio estacion);  // Verifica que la cantidad de surtidores que puede contener una E/S sea válida
+
+int asignarCodigoSurtidor(const Surtidor& surtidor);  // Al momento de crear un surtidor, la función amiga le asigna un código único al mismo
 
 #endif // CLASES_FUNCIONES_H

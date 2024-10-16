@@ -4,12 +4,14 @@
 using namespace std;
 
 int main(){
-    EstacionServicio estacion1;
 
-    estacion1.setUbicacionGeografica();
-    string* ubicacion = estacion1.getUbicacionGeografica();
+    RedNacional redNacional;
 
-    cout << "Latitud: " << ubicacion[0] << " | " << "Longitud: " << ubicacion[1] << endl << endl;
+    EstacionServicio estacion;
+
+    Surtidor surtidor = estacion.crearSurtidor();
+
+    //string* ubicacion = estacion1.getUbicacionGeografica();
 
     /*estacion1.setTanqueCentral();
     int* tanque = estacion1.getTanqueCentral(); */ // Usa esto para obtener una representación del tanque central de la E/S
