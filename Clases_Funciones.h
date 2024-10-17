@@ -14,6 +14,9 @@ class Surtidor{
 
 public:
 
+    void setModelo();  // Valor numérico establecido de forma acleatoria para cada surtidor, en un rango [300,310]
+    int getModelo();  // Consulta / obtiene el modelo de un surtidor
+
     int getCodigoSurtidor();  // Consulta / obtiene el código identificador de un surtidor
 
     void setEstado();  // Modifica el estado de un surtidor de una E/S
@@ -84,5 +87,8 @@ public:
 // ---------------------------------------------------------------------- FUNCIONES -------------------------------------------------------------------------------------
 
 bool verificarCantidadSurtidores(const EstacionServicio &estacion);  // Verifica que la cantidad de surtidores que puede contener una E/S sea válida
+
+char option();  // Retorna una opción para navegar en el menú más externo
+char opcionGestionarRed();  // Retorna una opción para navegar sobre el menú para gestionar la red
 
 #endif // CLASES_FUNCIONES_H

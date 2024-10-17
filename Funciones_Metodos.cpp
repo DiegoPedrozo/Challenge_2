@@ -14,7 +14,7 @@ int Surtidor::asignarCodigoSurtidor(){
 
 Surtidor::Surtidor(){}  // Constructor por defecto de la clase Surtidor, usado para crear el arreglo de surtidores
 
-Surtidor::Surtidor(int _codigo) : codigoSurtidor(_codigo), estado(true){} // Constructor de un surtidor, habilitado para dispensar combustible, se asigna código identificador
+Surtidor::Surtidor(int _codigo) : modelo(0), codigoSurtidor(_codigo), estado(true){} // Constructor de un surtidor, habilitado para dispensar combustible, se asigna código identificador
 
 Surtidor::~Surtidor(){}  // Destructor de un objeto de la clase Surtidor
 
@@ -34,6 +34,20 @@ EstacionServicio::~EstacionServicio(){  // Destructor de un objeto de la clase E
 RedNacional::RedNacional(){}  // Constructor de un objeto de la clase RedNacional
 
 RedNacional::~RedNacional(){}  // Destructor de un objeto de la clase RedNacional
+
+void Surtidor::setModelo(){  // Asigna el modelo de un surtidor de forma aletoria en un rango [300, 310]
+    int modeloMin = 300, modeloMax = 310, modeloAleatorio;
+
+    random_device num;
+    mt19937 gen(num());
+    uniform_int_distribution<> distrib(modeloMin, modeloMax);
+    modeloAleatorio = distrib(gen);
+    modelo = modeloAleatorio;
+}
+
+int Surtidor::getModelo(){  // Consulta / obtiene el modelo de un surtidor
+    return modelo;
+}
 
 int Surtidor::getCodigoSurtidor(){  // Consulta / obtiene el código identificador de un surtidor
     return codigoSurtidor;
@@ -127,6 +141,7 @@ int EstacionServicio::getCantidadSurtidores(){  // Consulta / obtiene la cantida
 void EstacionServicio::crearSurtidor(){  // Permite crear un surtidor para una estación de servicio determinada
     int codigo = Surtidor::asignarCodigoSurtidor();
     surtidores[cantidadSurtidores] = Surtidor(codigo);
+    surtidores[cantidadSurtidores].setModelo();
     cantidadSurtidores++;
 }
 
@@ -145,6 +160,54 @@ bool verificarCantidadSurtidores(EstacionServicio &estacion){  // Función amiga
     } else { return true; }*/
     // Retorna true si se pueden agregar más surtidores o false en caso contrario
 }
+
+char option(){  // Retorna una opción para navegar en el menú más externo
+    char toDo = 'F';
+
+    do{
+        cout << "Ingresa la letra correspondiente segun lo que deseas hacer: " << endl << endl
+             << "    (A) Gestionar red nacional" << endl
+             << "    (B) Gestionar estaciones de servicio" << endl
+             << "    (C) Verificar fugas" << endl
+             << "    (D) Simular una venta" << endl
+             << "    (E) Salir del sistema    " << endl << endl
+             << "Tu opcion: "; cin >> toDo;
+
+        toDo = toupper(toDo);
+
+        if (toDo != 'A' && toDo != 'B' && toDo != 'C' && toDo != 'D' && toDo != 'E'){
+            cout << "Ingresaste una opcion invalida. Intenta de nuevo" << endl << endl;
+        }
+
+    }while(toDo != 'A' && toDo != 'B' && toDo != 'C' && toDo != 'D' && toDo != 'E');
+
+    return toDo;
+}
+
+char opcionGestionarRed(){  // Retorna una opción para navegar sobre el menú para gestionar la red
+    char toDo = 'F';
+
+    do{
+        cout << "\nGESTIONANDO RED NACIONAL..." << endl << endl;
+        cout << "Ingresa la letra correspondiente segun lo que deseas hacer: " << endl << endl
+             << "    (A) Agregar estacion de servicio" << endl
+             << "    (B) Eliminar estacion de servicio" << endl
+             << "    (C) Calcular monto total de ventas" << endl
+             << "    (D) Fijar precios del combustible" << endl
+             << "    (E) Salir de la gestion de la red" << endl << endl
+             << "Tu opcion: "; cin >> toDo;
+
+        toDo = toupper(toDo);
+
+        if (toDo != 'A' && toDo != 'B' && toDo != 'C' && toDo != 'D' && toDo != 'E'){
+            cout << "\nIngresaste una opcion invalida. Intenta de nuevo" << endl;
+        }
+
+    }while(toDo != 'A' && toDo != 'B' && toDo != 'C' && toDo != 'D' && toDo != 'E');
+
+    return toDo;
+}
+
 
 
 
