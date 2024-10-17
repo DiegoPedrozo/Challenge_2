@@ -6,7 +6,20 @@
 
 using namespace std;
 
+int Surtidor::proximoCodigoSurtidor = 1000;
+
+int Surtidor::asignarCodigoSurtidor(){
+    return proximoCodigoSurtidor++;
+}
+
+Surtidor::Surtidor(){}  // Constructor por defecto de la clase Surtidor, usado para crear el arreglo de surtidores
+
+Surtidor::Surtidor(int _codigo) : codigoSurtidor(_codigo), estado(true){} // Constructor de un surtidor, habilitado para dispensar combustible, se asigna código identificador
+
+Surtidor::~Surtidor(){}  // Destructor de un objeto de la clase Surtidor
+
 EstacionServicio::EstacionServicio() : nombre(""), cantidadSurtidores(0){  // Constructor de un objeto de la clase EstacionServicio
+
     for (int i = 0; i < 4; i++){ tanqueCentral[i] = 0; }
 
     for (int i = 0; i < 2; i++){  // Asigna por defecto un valor de ubicación geográfica a una E/S
@@ -18,18 +31,12 @@ EstacionServicio::~EstacionServicio(){  // Destructor de un objeto de la clase E
     //delete[] surtidores;  // Libera del heap el espacio ocupado por el arreglo de surtidores
 }
 
-Surtidor::Surtidor(){}  // Constructor por defecto de una instancia de la clase Surtidor
-
-Surtidor::Surtidor(int _codigo) : codigoIdentificador(_codigo), estado(true){}  // Constructor de un surtidor, donde por defecto está habilitado para dispensar combustible
-
-Surtidor::~Surtidor(){}  // Destructor de un objeto de la clase Surtidor
-
 RedNacional::RedNacional(){}  // Constructor de un objeto de la clase RedNacional
 
 RedNacional::~RedNacional(){}  // Destructor de un objeto de la clase RedNacional
 
-int Surtidor::getCodigoIdentificador(){  // Consulta / obtiene el código identificador de un surtidor
-    return codigoIdentificador;
+int Surtidor::getCodigoSurtidor(){  // Consulta / obtiene el código identificador de un surtidor
+    return codigoSurtidor;
 }
 
 void Surtidor::setEstado(){  // Permite activar o desactivar el estado de un surtidor
@@ -41,7 +48,7 @@ void Surtidor::setEstado(){  // Permite activar o desactivar el estado de un sur
     estado = _estado;
 }
 
-bool Surtidor::getEstado(){
+bool Surtidor::getEstado(){  // Consulta / obtiene el estado de un surtidor
     return estado;
 }
 
@@ -118,28 +125,25 @@ int EstacionServicio::getCantidadSurtidores(){  // Consulta / obtiene la cantida
 }
 
 void EstacionServicio::crearSurtidor(){  // Permite crear un surtidor para una estación de servicio determinada
-    Surtidor surtidor;
-    int codigo = asignarCodigoSurtidor(surtidor);
-    surtidores[cantidadSurtidores] = surtidor;
+    int codigo = Surtidor::asignarCodigoSurtidor();
+    surtidores[cantidadSurtidores] = Surtidor(codigo);
     cantidadSurtidores++;
 }
 
-int RedNacional::asignarCodigoSurtidor(){  // Al momento de crear un surtidor, le asigna un código único y le suma uno al código identificador
-    codigoSurtidor += 1;
-    return codigoSurtidor;
+Surtidor EstacionServicio::getSurtidor(int pos){  // Permite obtener un surtidor en específico del arreglo de surtidores de una E/S
+    return surtidores[pos];
 }
 
 // ---------------------------------------------------------------------- FUNCIONES -------------------------------------------------------------------------------------
 
-bool verificarCantidadSurtidores(const EstacionServicio &estacion){  // Función amiga que verifica que la cantidad de surtidores que contiene una E/S sea válida
-    if (estacion.cantidadSurtidores > 11){
-        return false;
-    } else { return true; }
-    // Retorna true si se pueden agregar más surtidores o false en caso contrario
-}
+bool verificarCantidadSurtidores(EstacionServicio &estacion){  // Función amiga que verifica que la cantidad de surtidores que contiene una E/S sea válida
 
-int asignarCodigoSurtidor(const RedNacional& estacion, const Surtidor& estacion){  // Al momento de crear un surtidor, la función amiga le asigna un código único al mismo
-    surtidor.codigoIdentificador
+    return estacion.getCantidadSurtidores() < 12;
+
+    /*if (estacion.cantidadSurtidores > 11){
+        return false;
+    } else { return true; }*/
+    // Retorna true si se pueden agregar más surtidores o false en caso contrario
 }
 
 
